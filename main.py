@@ -81,19 +81,16 @@ def run_bfs_solver():
         print("No solution found with BFS")
 
 
-# Function to run A* with the chosen heuristic
 def run_a_star_solver(heuristic, heuristic_name):
-    """Run A* solver with the specified heuristic and display results."""
     initial_state = [[8, 0, 6], [5, 4, 7], [2, 3, 1]]  # Example initial state
-    
     puzzle = EightPuzzle(initial_state)
     solver = AStarSolver(heuristic)
 
     # Solve using A* with the given heuristic
-    solution_moves, elapsed_time = solver.search(puzzle, puzzle)
+    solution_moves, explored_nodes, elapsed_time = solver.search(puzzle, puzzle)
 
     if solution_moves:
-        print(f"A* ({heuristic_name}) Solution found in {elapsed_time:.4f} seconds")
+        print(f"A* ({heuristic_name}) Solution found after exploring {explored_nodes} nodes in {elapsed_time:.4f} seconds")
         print(f"Moves: {solution_moves}")
 
         # Animate the solution with a button-based progression
@@ -101,12 +98,12 @@ def run_a_star_solver(heuristic, heuristic_name):
     else:
         print(f"No solution found with A* ({heuristic_name})")
 
-
 # Main Execution
 if __name__ == "__main__":
-    # Run BFS Solver
-    print("Running BFS Solver:")
-    run_bfs_solver()
+
+    # Run A* Solver with Manhattan + Linear Conflict Heuristic
+    print("\nRunning A* Solver with Manhattan + Linear Conflict Heuristic:")
+    run_a_star_solver(ManhattanLinearConflict(), "Manhattan + Linear Conflict")
 
     # Run A* Solver with Hamming Heuristic
     print("\nRunning A* Solver with Hamming Heuristic:")
@@ -116,6 +113,8 @@ if __name__ == "__main__":
     print("\nRunning A* Solver with Manhattan Heuristic:")
     run_a_star_solver(Manhattan(), "Manhattan")
 
-    # Run A* Solver with Manhattan + Linear Conflict Heuristic
-    print("\nRunning A* Solver with Manhattan + Linear Conflict Heuristic:")
-    run_a_star_solver(ManhattanLinearConflict(), "Manhattan + Linear Conflict")
+
+
+    # Run BFS Solver
+    print("Running BFS Solver:")
+    run_bfs_solver()

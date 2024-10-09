@@ -3,11 +3,11 @@ from collections import deque
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
-# 8-Puzzle Class
 class EightPuzzle:
     def __init__(self, initial_state):
         self.state = np.array(initial_state)
         self.blank_pos = np.argwhere(self.state == 0)[0]
+        self.f_value = 0  # Add f_value to track g + h for A*
 
     def move(self, direction):
         """Move the blank tile in a given direction if possible."""
@@ -32,7 +32,9 @@ class EightPuzzle:
 
     def copy(self):
         """Return a copy of the current puzzle."""
-        return EightPuzzle(self.state.copy())
+        new_puzzle = EightPuzzle(self.state.copy())
+        new_puzzle.f_value = self.f_value  # Make sure to copy the f_value
+        return new_puzzle
 
     def legal_moves(self):
         """Returns a list of legal moves from the current state."""
@@ -60,8 +62,10 @@ class EightPuzzle:
     def __hash__(self):
         return hash(self.state.tobytes())
 
+    def __lt__(self, other):
+        """Less than comparison for A* algorithm's priority queue based on f_value."""
+        return self.f_value < other.f_value
+
     def __str__(self):
         """String representation of the puzzle state."""
         return '\n'.join([' '.join(map(str, row)) for row in self.state]) + '\n'
-
-
