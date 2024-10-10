@@ -41,16 +41,20 @@ python main.py
 
 ### 📝 Example output:
 ```
-Testing A* with Hamming Distance
-Solution found in 0.0004 seconds
-Moves: ['down', 'right', 'up', 'left', 'down', 'right']
 
-Testing A* with Manhattan Distance
-Solution found in 0.0003 seconds
-Moves: ['right', 'down', 'left', 'up', 'right']
+Running A* Solver with Hamming Heuristic:
+A* (Hamming) Solution found after exploring 53419 nodes in 10.0843 seconds
+Moves: ['down', 'left', 'up', 'right', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'left', 'down', 'right', 'up', 'left', 'up', 'right', 'down', 'right', 'down']
 
-Testing A* with Manhattan Distance + Linear Conflict
-Solution found in 0.0005 seconds
-Moves: ['down', 'right', 'left', 'up', 'right', 'down']
+Running A* Solver with Manhattan + Linear Conflict Heuristic:
+A* (Manhattan + Linear Conflict) Solution found after exploring 2346 nodes in 0.5514 seconds
+Moves: ['down', 'left', 'up', 'right', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'left', 'down', 'right', 'up', 'left', 'up', 'right', 'down', 'right', 'down']
+
+Running A* Solver with Manhattan Heuristic:
+A* (Manhattan) Solution found after exploring 4321 nodes in 0.8191 seconds
+Moves: ['down', 'left', 'up', 'right', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'left', 'down', 'right', 'up', 'left', 'up', 'right', 'down', 'right', 'down']
+Running BFS Solver:
+BFS Solution found after exploring 174373 nodes
+Moves: ['down', 'left', 'up', 'right', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'down', 'right', 'up', 'up', 'left', 'down', 'left', 'down', 'right', 'up', 'left', 'up', 'right', 'down', 'right', 'down']
 ```
 
