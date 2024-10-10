@@ -83,11 +83,14 @@ def run_bfs_solver():
 
 def run_a_star_solver(heuristic, heuristic_name):
     initial_state = [[8, 0, 6], [5, 4, 7], [2, 3, 1]]  # Example initial state
+    goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]  # Standard goal state for 8-puzzle
     puzzle = EightPuzzle(initial_state)
+    goal_puzzle = EightPuzzle(goal_state)
+    
     solver = AStarSolver(heuristic)
 
     # Solve using A* with the given heuristic
-    solution_moves, explored_nodes, elapsed_time = solver.search(puzzle, puzzle)
+    solution_moves, explored_nodes, elapsed_time = solver.search(puzzle, goal_puzzle)
 
     if solution_moves:
         print(f"A* ({heuristic_name}) Solution found after exploring {explored_nodes} nodes in {elapsed_time:.4f} seconds")
@@ -98,16 +101,18 @@ def run_a_star_solver(heuristic, heuristic_name):
     else:
         print(f"No solution found with A* ({heuristic_name})")
 
+
 # Main Execution
 if __name__ == "__main__":
+
+    # Run A* Solver with Hamming Heuristic
+    print("\nRunning A* Solver with Hamming Heuristic:")
+    run_a_star_solver(Hamming(), "Hamming")
 
     # Run A* Solver with Manhattan + Linear Conflict Heuristic
     print("\nRunning A* Solver with Manhattan + Linear Conflict Heuristic:")
     run_a_star_solver(ManhattanLinearConflict(), "Manhattan + Linear Conflict")
 
-    # Run A* Solver with Hamming Heuristic
-    print("\nRunning A* Solver with Hamming Heuristic:")
-    run_a_star_solver(Hamming(), "Hamming")
 
     # Run A* Solver with Manhattan Heuristic
     print("\nRunning A* Solver with Manhattan Heuristic:")

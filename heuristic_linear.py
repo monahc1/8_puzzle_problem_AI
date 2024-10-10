@@ -1,52 +1,34 @@
+# heuristic_linear.py
+
 class ManhattanLinearConflict:
-    def manhattan_distance(self, current_state, goal_state):
-        """Calculate Manhattan distance"""
-        distance = 0
+    def evaluate(self, puzzle, goal_puzzle):
+        """Calculate the Manhattan distance plus linear conflicts."""
+        manhattan_distance = 0
+        linear_conflict = 0
+
         for i in range(3):
             for j in range(3):
-                value = current_state[i][j]
-                if value != 0:  # Skip the blank tile
-                    # Find goal position of the tile
-                    goal_pos = [(goal_state == value).nonzero()][0]
-                    distance += abs(i - goal_pos[0][0]) + abs(j - goal_pos[1][0])
-        return distance
+                value = puzzle.state[i][j]
+                if value != 0:
+                    goal_position = divmod(value - 1, 3)
+                    manhattan_distance += abs(goal_position[0] - i) + abs(goal_position[1] - j)
 
-    def linear_conflict(self, current_state, goal_state):
-        """Calculate Linear Conflict"""
-        conflict = 0
+                    # Check for linear conflicts in rows
+                    if goal_position[0] == i:
+                        for k in range(j + 1, 3):
+                            other_value = puzzle.state[i][k]
+                            if other_value != 0:
+                                other_goal_position = divmod(other_value - 1, 3)
+                                if other_goal_position[0] == i and other_goal_position[1] < goal_position[1]:
+                                    linear_conflict += 1
 
-        # Check rows for linear conflict
-        for row in range(3):
-            current_row = current_state[row]
-            goal_row = goal_state[row]
-            for i in range(3):
-                for j in range(i + 1, 3):
-                    # Consider only non-zero values (ignore blank tile)
-                    if current_row[i] != 0 and current_row[j] != 0:
-                        # Ensure both tiles are supposed to be in the goal row
-                        if current_row[i] in goal_row and current_row[j] in goal_row:
-                            goal_pos_i = goal_row.tolist().index(current_row[i])
-                            goal_pos_j = goal_row.tolist().index(current_row[j])
-                            if goal_pos_i > goal_pos_j:  # Linear conflict
-                                conflict += 1
+                    # Check for linear conflicts in columns
+                    if goal_position[1] == j:
+                        for k in range(i + 1, 3):
+                            other_value = puzzle.state[k][j]
+                            if other_value != 0:
+                                other_goal_position = divmod(other_value - 1, 3)
+                                if other_goal_position[1] == j and other_goal_position[0] < goal_position[0]:
+                                    linear_conflict += 1
 
-        # Check columns for linear conflict
-        for col in range(3):
-            current_col = [current_state[row][col] for row in range(3)]
-            goal_col = [goal_state[row][col] for row in range(3)]
-            for i in range(3):
-                for j in range(i + 1, 3):
-                    # Consider only non-zero values (ignore blank tile)
-                    if current_col[i] != 0 and current_col[j] != 0:
-                        # Ensure both tiles are supposed to be in the goal column
-                        if current_col[i] in goal_col and current_col[j] in goal_col:
-                            goal_pos_i = goal_col.index(current_col[i])
-                            goal_pos_j = goal_col.index(current_col[j])
-                            if goal_pos_i > goal_pos_j:  # Linear conflict
-                                conflict += 1
-
-        return conflict * 2  # Each conflict adds 2 moves
-
-    def h(self, current_state, goal_state):
-        """Calculate the total heuristic: Manhattan distance + linear conflicts."""
-        return self.manhattan_distance(current_state, goal_state) + self.linear_conflict(current_state, goal_state)
+        return manhattan_distance + 2 * linear_conflict

@@ -3,11 +3,18 @@ from collections import deque
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
+
 class EightPuzzle:
     def __init__(self, initial_state):
         self.state = np.array(initial_state)
         self.blank_pos = np.argwhere(self.state == 0)[0]
-        self.f_value = 0  # Add f_value to track g + h for A*
+        self.moves = []  # Track the moves that have been made
+        self.g_value = 0  # Cost from the start node to this node
+        self.f_value = 0  # Sum of g + h
+
+    def is_solved(self, goal_state):
+        """Check if the current puzzle matches the goal state."""
+        return np.array_equal(self.state, goal_state.state)
 
     def move(self, direction):
         """Move the blank tile in a given direction if possible."""
@@ -26,9 +33,7 @@ class EightPuzzle:
         self.state[tuple(pos1)], self.state[tuple(pos2)] = self.state[tuple(pos2)], self.state[tuple(pos1)]
         self.blank_pos = pos2  # Update the blank position
 
-    def is_solved(self):
-        """Check if the puzzle is solved."""
-        return np.array_equal(self.state, np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]]))
+
 
     def copy(self):
         """Return a copy of the current puzzle."""
