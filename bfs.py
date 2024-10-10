@@ -1,9 +1,10 @@
 from collections import deque
 
-def bfs_solve(puzzle):
+def bfs_solve(puzzle, goal_puzzle):
     """
     Solve the 8-puzzle using BFS and return the sequence of moves.
     :param puzzle: The initial puzzle state as an EightPuzzle object.
+    :param goal_puzzle: The goal puzzle state to compare against.
     :return: A tuple containing the list of moves to solve the puzzle and the number of explored nodes.
     """
     frontier = deque([(puzzle.copy(), [])])  # Queue of (puzzle, moves)
@@ -13,7 +14,7 @@ def bfs_solve(puzzle):
     while frontier:
         current_puzzle, moves = frontier.popleft()
 
-        if current_puzzle.is_solved():
+        if current_puzzle.is_solved(goal_puzzle):
             return moves, explored_nodes  # Return the list of moves to solve the puzzle and number of explored nodes
 
         if current_puzzle not in explored:

@@ -61,15 +61,16 @@ def manual_animation_with_button(puzzle_initial_state, solution_moves):
     plt.show()
 
 
-# Function to run BFS
 def run_bfs_solver():
     """Run BFS solver and display results."""
     initial_state = [[8, 0, 6], [5, 4, 7], [2, 3, 1]]  # Example initial state
+    goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]  # Goal state
     
     puzzle = EightPuzzle(initial_state)
+    goal_puzzle = EightPuzzle(goal_state)
 
     # Solve using BFS
-    solution_moves, explored_nodes = bfs_solve(puzzle)
+    solution_moves, explored_nodes = bfs_solve(puzzle, goal_puzzle)
 
     if solution_moves:
         print(f"BFS Solution found after exploring {explored_nodes} nodes")
@@ -79,6 +80,7 @@ def run_bfs_solver():
         manual_animation_with_button(initial_state, solution_moves)
     else:
         print("No solution found with BFS")
+
 
 
 def run_a_star_solver(heuristic, heuristic_name):
