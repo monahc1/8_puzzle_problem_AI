@@ -1,3 +1,4 @@
+
 from eight_puzzle import EightPuzzle
 from bfs import bfs_solve
 from astar import AStarSolver
@@ -7,7 +8,16 @@ from heuristic_linear import ManhattanLinearConflict
 
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
+import matplotlib.patches as patches
 
+
+BACKGROUND_COLOR = '#EAE5F0'  # Light purple background
+TILE_COLOR = '#B0A3D2'         # Soft purple for tiles
+BLANK_TILE_COLOR = '#D1D1E9'    # Light gray for the blank tile
+BUTTON_COLOR = '#8E7D9D'        # Button color
+BUTTON_HOVER_COLOR = '#6E5972'  # Button hover color
+PASTEL_INDIGO = '#B7C9E2'  # Pastel indigo color
+BORDER_COLOR = '#6B5B9A'    # Color for the border
 
 # Puzzle Display and Button-based Manual Progression Functions
 def update_display(puzzle, ax):
@@ -18,16 +28,17 @@ def update_display(puzzle, ax):
     ax.axis('off')
     ax.set_xlim(0, 3)
     ax.set_ylim(0, 3)
+    
+    ax.set_facecolor(BACKGROUND_COLOR)  # Set background color
 
-    # Reverse row index to show first row at the top
     for i in range(3):
         for j in range(3):
             value = puzzle.state[2 - i][j]  # Reverse row index
             label = '' if value == 0 else str(value)
             ax.text(j + 0.5, i + 0.5, label, ha='center', va='center', fontsize=45, fontweight='bold',
-                    bbox=dict(facecolor='lightgray' if value == 0 else 'white', 
-                              edgecolor='black', boxstyle='round,pad=0.6', linewidth=2))
-
+                    bbox=dict(facecolor=TILE_COLOR if value != 0 else BLANK_TILE_COLOR, 
+                              edgecolor='black', boxstyle='square,pad=0.6', linewidth=2))
+            ax.set_title("Eight Puzzle Game", fontsize=24, fontweight='bold', color='black',fontname='Garamond')
     plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.1)
     plt.draw()
 
@@ -41,12 +52,19 @@ def on_click(event, puzzle, ax, solution_moves, step_counter):
 
 def manual_animation_with_button(puzzle_initial_state, solution_moves):
     """Set up the puzzle display with a button for manual progression."""
-    fig, ax = plt.subplots(figsize=(5, 5))
+    fig, ax = plt.subplots(figsize=(5, 6))
 
-    # Create a button
+    # Create a button with new colors
     ax_next = plt.axes([0.8, 0.02, 0.15, 0.07])
-    next_btn = Button(ax_next, 'Next')
+    next_btn = Button(ax_next, 'Next', color=BUTTON_COLOR, hovercolor=BUTTON_HOVER_COLOR)
 
+    # Set the background color of the figure to pastel indigo
+    fig.patch.set_facecolor(PASTEL_INDIGO)
+
+
+    # Create a rectangle to serve as a border
+    border = patches.Rectangle((-0.05, -0.05), 3.1, 3.1, linewidth=5, edgecolor=BORDER_COLOR, facecolor='none')
+    ax.add_patch(border)
     # Initialize the puzzle to the original initial state
     puzzle = EightPuzzle(puzzle_initial_state.copy())  # Reset puzzle to initial state
 
@@ -59,6 +77,7 @@ def manual_animation_with_button(puzzle_initial_state, solution_moves):
     # Initial display of the puzzle
     update_display(puzzle, ax)
     plt.show()
+
 
 
 def run_bfs_solver():
